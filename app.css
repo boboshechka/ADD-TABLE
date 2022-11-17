@@ -1,0 +1,139 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+*,
+*::after,
+*::before {
+    box-sizing: border-box
+}
+a{
+    text-decoration: none;
+}
+
+ul,li,p {
+    padding-block-start: 0;
+    padding-inline-start: 0;
+    list-style-type: none;
+    margin: 0;
+}
+
+.container {
+    margin-top: 100px;
+    width: 100%;
+    height: 100%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-direction: column;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+.box {
+    background-color: rgb(223, 215, 215);
+    border-radius: 10px;
+    height: 250px;
+    width: 400px;
+}
+
+.box form {
+    margin-left: 10px;
+
+}
+
+.chose {
+    display: flex;
+    flex-direction: row;
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.chose-1 {
+    margin-top: 20px;
+    
+}
+
+.chose__tit {
+    margin-bottom: 0;
+    margin-right: 5px;
+}
+
+button {
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    background-color: rgb(164, 213, 255);
+    font-size: 15px;
+}
+
+select {
+    background-color: inherit;
+    font-size: 20px;
+    border: none;
+    font-family: inherit;
+    cursor: pointer;
+    border-radius: 7px;
+
+}
+select:hover {
+    background-color: rgb(191, 191, 219);
+    transition: 0.5s;
+}
+
+.select__diff {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 100px;
+    max-width: 150px;
+}
+input {
+    background-color: inherit;
+    font-size: 20px;
+    border: none;
+    font-family: inherit;
+    border-radius: 7px;
+}
+input:hover {
+    background-color: rgb(191, 191, 219);
+    transition: 0.5s;
+}
+
+input {
+    border:1px solid black;
+}
+
+.table__box {
+    margin: 20px 0;
+}
+
+.products {
+    font-size:20px;
+    background-color: rgb(86, 199, 114);
+    color:white;
+    border-collapse: collapse;
+}
+.products td {
+    padding: 10px;
+    border: 1px solid white;
+}
+th.sorted[data-order="1"],
+th.sorted[data-order="-1"] {
+    position: relative;
+}
+
+th.sorted[data-order="1"]::after,
+th.sorted[data-order="-1"]::after {
+    right: 8px;
+    position: absolute;
+}
+
+th.sorted[data-order="-1"]::after {
+	content: "▼"
+}
+
+th.sorted[data-order="1"]::after {
+	content: "▲"
+}

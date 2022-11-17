@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="app.css">
+    <title>Document</title>
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="box">
+            <form  id="form" name="products">
+                <div class="chose chose-1">
+                    <label class="chose__tit">
+                        Производитель:
+                        <select class="select__diff" name="manufacturer">
+                            <option value="Apple">Apple</option>
+                        </select>
+                    </label>
+                </div>
+
+                <div class="chose">
+                    <label class="chose__tit">
+                        Наименование:
+                        <select name="model">
+                            <option value="iPhone 13 128GB" selected>iPhone 13 128GB</option>
+                            <option value="iPhone 14 256GB">iPhone 14 256GB</option>
+                            <option value="iPhone 12 64GB">iPhone 12 64GB</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="chose">
+                    <label class="chose__tit">
+                        Цена:
+                        <select name="cost">
+                            <option value="80999" selected>80999</option>
+                            <option value="110000">110000</option>
+                            <option value="55000">55000</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="chose">
+                    <label class="chose__tit">
+                        Количество:
+                        <input type="text" name="amount">
+                </div>
+                </label>
+                <button type="submit" class="btn" id="1">Добавить</button>
+        </div>
+        </form>
+        <div class="table__box">
+            <!-- <button type="button" id="get-users">Получить список пользователей</button> -->
+            <!-- <table>
+                <thead>
+                    <tr>
+                        <th>Производитель</th>
+                        <th>Наименование</th>
+                        <th>Цена</th>
+                        <th>Количество</th>
+                    </tr>
+                </thead>
+                <tbody></tbody> 
+            </table> -->
+        </div>
+    </div>
+
+
+
+
+    <script src="app.js"></script>
+</body>
+
+</html>
