@@ -59,9 +59,8 @@ form.addEventListener('submit', function (e) {
   // }
 
   const item = addToBasket()
-  // console.log("ITEMSS", item)
+  
   sendToServer(item)
-  reload
 })
 
 function addToBasket() {
