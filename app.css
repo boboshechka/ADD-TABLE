@@ -68,6 +68,9 @@ button {
     font-size: 15px;
 }
 
+button:hover {
+    background-color: rgb(76, 157, 228);
+}
 select {
     background-color: inherit;
     font-size: 20px;
@@ -119,6 +122,14 @@ input {
     padding: 10px;
     border: 1px solid white;
 }
+thead tr th {
+    margin-right: 10px;
+}
+.delete {
+    cursor: pointer;
+    background-color: orange;
+}
+
 th.sorted[data-order="1"],
 th.sorted[data-order="-1"] {
     position: relative;

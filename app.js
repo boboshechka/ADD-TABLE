@@ -1,56 +1,149 @@
 const btn = document.querySelector('.btn');
 const container = document.querySelector('.container')
 const form = document.getElementById('form');
-// const items = [];
 const tableCreated = false;
 const tableBox = document.querySelector('.table__box');
+// const deleteAll = document.querySelector('.btn_delete');
+const del = document.querySelectorAll('.delete')
 
+function createTable() {
+  tableBox.innerHTML = `
+  <table class="products">
+    <thead>
+      <tr>
+        <th>Производитель</th>
+        <th>Наименование</th>
+        <th>Цена</th>
+        <th>Количество</th>
+      </tr>
+    </thead>
+    <tbody ></tbody> 
+  </table>
+  `;
+
+}
 
 
 document.addEventListener('DOMContentLoaded', async function () {
 
-  createTable()
+  createTable();
 
   // ПОЛУЧЕНИЕ ДАННЫХ С СЕРВЕРА
   try {
     let response = await fetch('http://attempt2/get.php');
     if (response.ok) {  //ПРОВЕРЯЕМ СОСТОЯНИЕ ОТВЕТА
       let result = await response.json();
-      const table = document.querySelector('.table__box tbody');
-      let html = '';
-      console.log(result)
+
+      const tbody = document.querySelector('.table__box tbody');
+
       for (let i = 0; i < result.length; i++) {
-        html += `<tr><td>${result[i].manufacturer}</td><td>${result[i].model}</td><td>${result[i].cost}</td><td>${result[i].amount}</td></tr>`;
+        const fields = ['manufacturer', 'model', 'cost', 'amount'];
+        const row = document.createElement('tr');
+        row.className = 'row';
+
+        for (let j = 0; j < fields.length; j++) {
+          const cell = document.createElement('td');
+          const fieldName = fields[j];
+          const value = result[i][fieldName];
+          cell.innerText = value;
+
+          row.appendChild(cell);
+        }
+
+        const cell = document.createElement('td');
+        cell.innerText = 'x';
+        cell.onclick = function () { deleteRow(result[i], row) };
+        row.appendChild(cell);
+
+        tbody.appendChild(row);
       }
-      table.innerHTML = html;
+
+      
+      // let html = '';
+      // const table = document.querySelector('.table__box tbody');
+      // let tr = document.createElement('tr');
+      // tr.className('row');
+      // let html = '';
+      // console.log(result)
+      // for (let i = 0; i < result.length; i++) {
+      //   html += `
+      //   <tr class = "row">
+      //     <td>${result[i].manufacturer}</td>
+      //     <td>${result[i].model}</td>
+      //     <td>${result[i].cost}</td>
+      //     <td>${result[i].amount}</td>
+      //     <td class="delete" onclick = "deleteRow(${result[i]})">✖</td>
+      //   </tr>`;
+      // }
+      // table.innerHTML = html;
     }
   }
   catch (error) {
     console.log(error);
   }
 
-// ПЫТАЕМСЯ В СОРТИРОВКУ
+  // ПЫТАЕМСЯ В СОРТИРОВКУ
   const getSort = ({ target }) => {
-    const order = (target.dataset.order = -(target.dataset.order || -1));
-    const index = [...target.parentNode.cells].indexOf(target);
-    const collator = new Intl.Collator(['en', 'ru'], { numeric: true });
-    const comparator = (index, order) => (a, b) => order * collator.compare(
-        a.children[index].innerHTML,
-        b.children[index].innerHTML
-    );
+    const tbody = document.querySelector('.table__box tbody');
+    const rows = Array.from(document.querySelectorAll('.products .row'));
+    target.dataset.order = -(target.dataset.order || -1)
+    // 
+    // const comparator = (order) => (r1, r2) => {
+    //   return order * (r1.childNodes[3].textContent - r2.childNodes[3].textContent);
+    // };
+
     
-    for(const tBody of target.closest('table').tBodies)
-        tBody.append(...[...tBody.rows].sort(comparator(index, order)));
+    rows.sort((r1, r2) => {
+      return target.dataset.order * (r1.childNodes[3].textContent - r2.childNodes[3].textContent);
+    });
+    // rows.sort(comparator(target.dataset.order))
+    for (let i = 0; i < rows.length; i++) {
+      tbody.appendChild(rows[i])
+    }
+    console.log('target', target)
 
-    for(const cell of target.parentNode.cells)
-        cell.classList.toggle('sorted', cell === target);
-};
 
-document.querySelectorAll('.products thead').forEach(tableTH => tableTH.addEventListener('click', () => getSort(event)));
 
+    // const index = [...target.parentNode.cells].indexOf(target);
+    // const collator = new Intl.Collator(['en', 'ru'], { numeric: true });
+    // const comparator = (index, order) => (a, b) => order * collator.compare(
+    //   a.children[index].innerHTML,
+    //   b.children[index].innerHTML
+    // );
+
+    // for (const tBody of target.closest('table').tBodies)
+    //   tBody.append(...[...tBody.rows].sort(comparator(index, order)));
+
+    // for (const cell of target.parentNode.cells)
+    //   cell.classList.toggle('sorted', cell === target);
+  };
+
+  document.querySelectorAll('.products thead').forEach(tableTH => tableTH.addEventListener('click', () => getSort(event)));
 
 })
 
+
+
+const deleteRow = async (item, row) => {
+  // const row = target.closest('.row');
+  // const rows = document.querySelectorAll('.products .row');
+  // const index = [...rows].indexOf(row);
+
+
+  try {
+    let response = await fetch('http://attempt2/deleteRow.php', {
+      method: 'DELETE',
+      body: JSON.stringify(item)
+    });
+    if (response.ok) {
+
+      row.remove();
+    }
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
 
 form.addEventListener('submit', function (e) {
   e.preventDefault()
@@ -59,7 +152,7 @@ form.addEventListener('submit', function (e) {
   // }
 
   const item = addToBasket()
-  
+
   sendToServer(item)
 })
 
@@ -103,36 +196,20 @@ const sendToServer = async (item) => {
   }
 }
 
+const deleteAll = async () => {
+  try {
+    let response = await fetch('http://attempt2/deleteAll.php')
+    if (response.ok) {
+      let result = await response.json();
+      // body.removeChild('table')
+      console.log(response)
+    }
 
-
-function createTable() {
-  tableBox.innerHTML = `
-  <table class="products">
-    <thead>
-      <tr>
-        <th>Производитель</th>
-        <th>Наименование</th>
-        <th>Цена</th>
-        <th>Количество</th>
-      </tr>
-    </thead>
-    <tbody ></tbody> 
-  </table>
-  `;
+  } catch (error) {
+    console.log(error)
+  }
 }
 
-//   for (let i = 0; i < item.length[key]; i++) {
-//     let products = document.querySelector('.products');
-//     // let row = document.createElement('tr');
-//     products.innerHTML = `
-//           <td>${item[key][i][0]}</td>
-//           <td>${item[key][i][1]}</td>
-//           <td>${item[key][i][2]}</td>
-//         `
-//   }
-// }
-//   // tableCreated = true;
-// }
-
+document.querySelector('.btn_delete').addEventListener('click', deleteAll)
 
 

@@ -9,8 +9,8 @@ $result = ['result' => 'success', 'error' => []];
 
 $manufacturer = $params['manufacturer'];
 $model = $params['model'];
-$cost = $params['cost'];  // number
-$amount = $params['amount']; // number
+$cost = $params['cost'];  // Number
+$amount = $params['amount']; // Number
 
 if (!$manufacturer) {
   $result['result'] = 'error';
@@ -33,7 +33,6 @@ if (file_exists('products.txt')) {
 
 
 if ($result['result'] == 'success') {
-  // $data[$manufacturer] = $model . $cost . $amount;
   array_push($data, implode(' :: ', [$manufacturer, $model, $cost, $amount]));
 
   if (file_put_contents('products.txt', json_encode($data), LOCK_EX) == false) {
